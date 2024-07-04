@@ -11,13 +11,14 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _fullnameController = TextEditingController();
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _kelaminController = TextEditingController();
-  TextEditingController _tanggal_lahirController = TextEditingController();
-  TextEditingController _alamatController = TextEditingController();
+  final TextEditingController _fullnameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _kelaminController = TextEditingController();
+  final TextEditingController _tanggal_lahirController = TextEditingController();
+  final TextEditingController _alamatController = TextEditingController();
+  bool _isPasswordVisible = false;
 
   Future<void> _register() async {
     final response = await http.post(
@@ -142,9 +143,24 @@ class _RegisterPageState extends State<RegisterPage> {
                           controller: _passwordController,
                           labelText: 'Password',
                           icon: Icons.lock,
+                          obscureText: !_isPasswordVisible,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your Password';
+                            } else if (value.length < 8) {
+                              return 'Password must be at least 8 characters long';
                             }
                             return null;
                           },
@@ -292,6 +308,7 @@ class _RegisterPageState extends State<RegisterPage> {
     required IconData icon,
     bool obscureText = false,
     bool readOnly = false,
+    Widget? suffixIcon,
     VoidCallback? onTap,
     required String? Function(String?) validator,
   }) {
@@ -306,6 +323,7 @@ class _RegisterPageState extends State<RegisterPage> {
         decoration: InputDecoration(
           labelText: labelText,
           prefixIcon: Icon(icon),
+          suffixIcon: suffixIcon,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),

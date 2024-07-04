@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
-        backgroundColor: const Color.fromRGBO(8,175,230,255),
+        backgroundColor: const Color.fromRGBO(8, 175, 230, 255),
       ),
       body: Center(
         child: Card(
@@ -130,6 +130,8 @@ class _LoginPageState extends State<LoginPage> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Password cannot be empty!';
+                        } else if (value.length < 8) {
+                          return 'Password must be at least 8 characters long';
                         }
                         return null;
                       },
@@ -143,15 +145,18 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                     style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.all(Size(340, 50)),
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.blue),
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)))),
+                      minimumSize: MaterialStateProperty.all(Size(340, 50)),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      shape:
+                          MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
                     child: const Text(
                       'Login',
                       style: TextStyle(
@@ -169,9 +174,11 @@ class _LoginPageState extends State<LoginPage> {
                       TextButton(
                         onPressed: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RegisterPage()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegisterPage(),
+                            ),
+                          );
                         },
                         child: Text(
                           'Register',
